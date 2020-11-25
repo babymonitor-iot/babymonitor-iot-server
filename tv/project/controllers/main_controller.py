@@ -29,11 +29,14 @@ def receive_sm():
 @app.route("/change", methods=["POST"])
 def change():
     global tv
-    msg = requests.json()['msg']
-    tv.block = msg['command']
+
+    command = requests.json().get('block')
+    tv.block = command['block']
     if tv.block:
         #TODO show message in screen
         return jsonify(construct_response('status', {'info': "Tv's block"})), 200
     else:
         #TODO show message in screen
         return jsonify(construct_response('status', {'info': "Tv's unlocked"})), 200
+
+

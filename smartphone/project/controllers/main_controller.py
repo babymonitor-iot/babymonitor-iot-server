@@ -12,11 +12,10 @@ def check():
 
 @app.route("/sm", methods=["POST"])
 def receive_bm():
-    body = requests.json()
+    body = request.json
     if body['type'] == 'notification':
         #TODO show in screen
-        #Forward to TV
-        requests.post('https://localhost:5002', json=body)
+        #Forward to TV        requests.post('https://localhost:5002', json=body)
         return jsonify(construct_response('confirmation', {'info': "Notification forward"}, 'bm')), 200
 
     if body['type'] == 'status':
@@ -25,7 +24,7 @@ def receive_bm():
 
 @app.route("/tv", methods=["POST"])
 def receive_tv():
-    body = requests.json()
+    body = request.json
     if body['type'] == 'notification':
         #TODO show in screen
         #Forward to TV
