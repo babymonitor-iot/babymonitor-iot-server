@@ -34,7 +34,6 @@ request to receive:
         "to": ,
     }
 }
-
 '''
 
 
@@ -54,7 +53,7 @@ def bm_send():
     global internal_state
 
     body = {
-        'type': 'status',
+        'type': 'notification',
         'msg': {
             'breathing': True,
             'time_no_breathing': 0,
@@ -73,7 +72,7 @@ def bm_send():
 
     # Send request to smp
     requests.post(
-        "http://localhost:5002",
+        "http://localhost:5003/bm_receive",
         json=body,
     )
 

@@ -1,7 +1,7 @@
 from project import app
-from flask import request, render_template, send_from_directory, jsonify, send_file
-from project.util.response import construct_response
 from project.model.tv_model import TV
+from project.util.response import construct_response
+from flask import request, render_template, send_from_directory, jsonify, send_file
 import json
 import requests
 
@@ -11,32 +11,33 @@ tv = TV(False)
 
 @app.route("/check", methods=["GET"])
 def check():
-    return "I'm working (Smartphone)"
+    return "I'm working TV"
 
 
-@app.route("/sm", methods=["POST"])
+@app.route("/tv_receive", methods=["POST"])
 def receive_sm():
     global tv
     if tv.block:
-        #TODO show message in screen
-        return jsonify(construct_response('status', {'info': "Tv's block"}, 'sm')), 200
+        # TODO show message in screen
+        return jsonify(construct_response("status", {"info": "Tv's blocked"}, "smp")), 200
 
     else:
-        #TODO show message in screen
-        return jsonify(construct_response('status', {'info': "Tv's unlocked"}, 'sm')), 200
+        # TODO show message in screen
+        return (
+            jsonify(construct_response("status", {"info": "Tv's unlocked"}, "smp")),
+            200,
+        )
 
 
 @app.route("/change", methods=["POST"])
 def change():
     global tv
 
-    command = requests.json().get('block')
-    tv.block = command['block']
+    command = request.json["block"]
+    tv.block = command["block"]
     if tv.block:
-        #TODO show message in screen
-        return jsonify(construct_response('status', {'info': "Tv's block"})), 200
+        # TODO show message in screen
+        return jsonify(construct_response("status", {"info": "Tv's block"})), 200
     else:
-        #TODO show message in screen
-        return jsonify(construct_response('status', {'info': "Tv's unlocked"})), 200
-
-
+        # TODO show message in screen
+        return jsonify(construct_response("status", {"info": "Tv's unlocked"})), 200
