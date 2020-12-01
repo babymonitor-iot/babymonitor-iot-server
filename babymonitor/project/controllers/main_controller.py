@@ -2,6 +2,8 @@ from project import app
 from flask import request, jsonify
 from project.service.bm_service import BabyMonitorService
 from project.util.validations import validate_request
+from project.util.generate_data import generate_data
+from project import db
 import json
 import requests
 
@@ -51,15 +53,11 @@ def bm_status():
 @app.route("/bm_send", methods=["GET"])
 def bm_send():
     global internal_state
-
+    generate_data('new')
+    
     body = {
         'type': 'notification',
-        'msg': {
-            'breathing': True,
-            'time_no_breathing': 0,
-            'sleeping': True,
-            'crying': False,
-        },
+        'msg': BabyMonitorService(db).last_record(),
         'route': {
             'from': 'bm',
             'to': 'smp',
@@ -76,7 +74,7 @@ def bm_send():
         json=body,
     )
 
-    return 'Message sent', 200
+    return jsonify(body), 200
 
 
 @app.route("/bm_receive", methods=["POST"])

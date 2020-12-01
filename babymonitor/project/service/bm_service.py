@@ -26,6 +26,7 @@ class BabyMonitorService:
         db.session.commit()
 
     def last_record(self):
+        import ipdb; ipdb.set_trace()
         data = self.database().query.order_by(self.database.id.desc()).first()
         if not data:
             return data
