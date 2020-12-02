@@ -41,14 +41,13 @@ def generate_data(type):
 
     elif type == 'repeat':
         data = last_record()
-        data.pop('id')
         if not data['breathing']: 
             data['time_no_breathing'] += 1
 
     elif type == 'new': 
-        breathing = random.choices([True, False], [0.0, 1], k=1)[0]
+        breathing = random.choices([True, False], [1, 0], k=1)[0]
         sleeping = random.choices([True, False], None, k=1)[0]
-        crying = False if breathing else random.choices([True, False], [0.2, 0.8], k=1)[0]
+        crying = False if not breathing else random.choices([True, False], [1.0, 0.0], k=1)[0]
         data = {
             'breathing': breathing,
             'sleeping': sleeping,

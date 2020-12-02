@@ -17,12 +17,15 @@ def check():
 @app.route("/tv_receive", methods=["POST"])
 def receive_sm():
     global tv
+    print(f'Receive {json.dumps(request.json, indent=4, sort_keys=True)}')
     if tv.block:
+        print("Tv's blocked")
         # TODO show message in screen
         return jsonify(construct_response("status", {"info": "Tv's blocked"}, "smp")), 200
 
     else:
         # TODO show message in screen
+        print("Tv's unlocked")
         return (
             jsonify(construct_response("status", {"info": "Tv's unlocked"}, "smp")),
             200,
@@ -37,7 +40,7 @@ def change():
     tv.block = command["block"]
     if tv.block:
         # TODO show message in screen
-        return jsonify(construct_response("status", {"info": "Tv's block"})), 200
+        return jsonify(construct_response("status", {"info": "Tv's blocked"})), 200
     else:
         # TODO show message in screen
         return jsonify(construct_response("status", {"info": "Tv's unlocked"})), 200

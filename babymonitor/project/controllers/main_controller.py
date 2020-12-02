@@ -3,9 +3,11 @@ from flask import request, jsonify
 from project.service.bm_service import last_record, insert_data
 from project.util.validations import validate_request
 from project.util.generate_data import generate_data
+from project.util.clean import clean_data
 from project import db
 import json
 import requests
+from pprint import pprint
 
 internal_state = "normal"
 
@@ -64,7 +66,7 @@ def bm_send():
 
     if body['type'] == 'notification':
         internal_state = 'critical'
-   
+
 
     # Send request to smp
     requests.post("http://localhost:5003/bm_receive", json=body)
@@ -81,5 +83,5 @@ def bm_receive():
         return jsonify({"msg": msg}), 400
 
     internal_state = "normal"
-
+    pprint(request.json)
     return "OK", 200
