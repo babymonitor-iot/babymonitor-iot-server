@@ -1,15 +1,15 @@
 from project import app
 from flask import request, jsonify
-from project.service.bm_service import BabyMonitorService
+from project.service.bm_service import last_record, insert_data
 from project.util.validations import validate_request
 from project.util.generate_data import generate_data
 from project import db
 import json
 import requests
 
-internal_state = 'normal'
+internal_state = "normal"
 
-'''
+"""
 request to send:
 {
     "type": 'status'/'notification',
@@ -36,7 +36,7 @@ request to receive:
         "to": ,
     }
 }
-'''
+"""
 
 
 @app.route("/check", methods=["GET"])
@@ -53,16 +53,19 @@ def bm_status():
 @app.route("/bm_send", methods=["GET"])
 def bm_send():
     global internal_state
-    generate_data('new')
-    
+    generate_data("new")
+
     body = {
-        'type': 'notification',
-        'msg': BabyMonitorService(db).last_record(),
-        'route': {
-            'from': 'bm',
-            'to': 'smp',
-        }
+        "type": "notification",
+        "msg": last_record(),
+        "route": {
+            "from": "bm",
+            "to": "smp",
+        },
     }
+    import ipdb
+
+    ipdb.set_trace()
     # if request.get('type') == 'notification':
     #     internal_state = 'critical'
     # BabyMonitorService().insert_data(request.json)
@@ -85,6 +88,6 @@ def bm_receive():
     if not validate:
         return jsonify({"msg": msg}), 400
 
-    internal_state = 'normal'
+    internal_state = "normal"
 
-    return 'OK', 200
+    return "OK", 200

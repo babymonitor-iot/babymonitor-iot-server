@@ -1,4 +1,4 @@
-from project.service.bm_service import BabyMonitorService
+from project.service.bm_service import insert_data, last_record
 from project import db
 import random
 
@@ -16,9 +16,9 @@ def define_type(function):
         if type == 'new':
             wrapped.calls += 1
             if wrapped.calls > max_repeat or wrapped.calls == 1:
-                return function('repeat')
-            else: 
                 return function('new')
+            else: 
+                return function('repeat')
 
         if type == 'repeat':
             wrapped.calls += 1
@@ -38,22 +38,21 @@ def generate_data(type):
             'time_no_breathing': 0
         }
 
-    elif type == 'repeat': 
-        data = BabyMonitorService(db).last_record()
+    elif type == 'repeat':
+        data = last_record()
         data.pop('id')
         if not data['breathing']: 
             data['time_no_breathing'] += 1
         return data
 
     elif type == 'new': 
-        breathing = random.choices([True, False], [0.2, 0.8], k=1)
-        sleeping = random.choices([True, False], None, k=1)
-        crying = False if breathing else random.choices([True, False], [0.2, 0.8], k=1)
+        breathing = random.choices([True, False], [0.2, 0.8], k=1)[0]
+        sleeping = random.choices([True, False], None, k=1)[0]
+        crying = False if breathing else random.choices([True, False], [0.2, 0.8], k=1)[0]
         data = {
             'breathing': breathing,
             'sleeping': sleeping,
             'crying': crying,
             'time_no_breathing': 0
         }
-
-    BabyMonitorService(db).insert_data(data)
+    insert_data(data)

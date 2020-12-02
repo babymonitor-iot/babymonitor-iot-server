@@ -7,10 +7,10 @@ RUN apk add --virtual .build-dependencies \
             pcre-dev
 
 RUN apk add --no-cache pcre
-WORKDIR /smartphone
-COPY . /smartphone
-RUN pip install -r /smartphone/requirements.txt
+WORKDIR /middleware
+COPY . /middleware
+RUN pip install -r /middleware/requirements.txt
 RUN pip install uwsgi
 RUN apk del .build-dependencies && rm -rf /var/cache/apk/*
-EXPOSE 5001
-CMD ["uwsgi", "--ini", "/smartphone/wsgi.ini"]
+EXPOSE 5000
+CMD ["uwsgi", "--ini", "/middleware/wsgi.ini"]

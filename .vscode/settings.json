@@ -1,4 +1,3 @@
 {
-    "python.pythonPath": "/home/adrilene/Área de Trabalho/GESAD/babymonitor/babymonitor-iot-server/env/bin/python3.8",
     "python.formatting.provider": "black"
 }

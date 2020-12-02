@@ -8,10 +8,10 @@ RUN apk add --virtual .build-dependencies \
             pcre-dev
 
 RUN apk add --no-cache pcre
-WORKDIR /data_extraction
-COPY . /data_extraction
-RUN pip install -r /data_extraction/requirements.txt
+WORKDIR /tv
+COPY . /tv
+RUN pip install -r /tv/requirements.txt
 RUN pip install uwsgi
 RUN apk del .build-dependencies && rm -rf /var/cache/apk/*
-EXPOSE 5001
-CMD ["uwsgi", "--ini", "/data_extraction/wsgi.ini"]
+EXPOSE 5002
+CMD ["uwsgi", "--ini", "/tv/wsgi.ini"]
