@@ -29,6 +29,7 @@ def define_type(function):
 
 @define_type
 def generate_data(type):
+    #import ipdb; ipdb.set_trace()
     data = {}
     if type == 'fine':
         data = {
@@ -43,10 +44,9 @@ def generate_data(type):
         data.pop('id')
         if not data['breathing']: 
             data['time_no_breathing'] += 1
-        return data
 
     elif type == 'new': 
-        breathing = random.choices([True, False], [0.2, 0.8], k=1)[0]
+        breathing = random.choices([True, False], [0.0, 1], k=1)[0]
         sleeping = random.choices([True, False], None, k=1)[0]
         crying = False if breathing else random.choices([True, False], [0.2, 0.8], k=1)[0]
         data = {

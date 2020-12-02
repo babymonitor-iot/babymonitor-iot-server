@@ -54,28 +54,20 @@ def bm_status():
 def bm_send():
     global internal_state
     generate_data("new")
-
+    data = last_record()
+    msg_type = "notification" if data["crying"] or data["time_no_breathing"] > 5 else "status"
     body = {
-        "type": "notification",
-        "msg": last_record(),
-        "route": {
-            "from": "bm",
-            "to": "smp",
-        },
+        "type": msg_type,
+        "msg": data,
+        "route": {"from": "bm", "to": "smp"},
     }
-    import ipdb
 
-    ipdb.set_trace()
-    # if request.get('type') == 'notification':
-    #     internal_state = 'critical'
-    # BabyMonitorService().insert_data(request.json)
-    # body = BabyMonitorService().last_record()
+    if body['type'] == 'notification':
+        internal_state = 'critical'
+   
 
     # Send request to smp
-    requests.post(
-        "http://localhost:5003/bm_receive",
-        json=body,
-    )
+    requests.post("http://localhost:5003/bm_receive", json=body)
 
     return jsonify(body), 200
 

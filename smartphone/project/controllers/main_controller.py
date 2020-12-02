@@ -5,6 +5,7 @@ import json
 import requests
 import threading
 
+notification = True
 
 @app.route("/check", methods=["GET"])
 def check():
@@ -15,10 +16,13 @@ def make_request(data):
 
 @app.route("/smp_receive", methods=["POST"])
 def receive_bm():
-
+    global notification
     body = request.json
+
+
     if body["route"]["from"] == "bm":
         if body["type"] == "notification":
+            # Start thread -> count 7 seconds if +-
             # TODO show in screen
             # Forward to TV requests.post('https://localhost:5002', json=body)
             body['route']['from'] = 'smp'
@@ -27,7 +31,7 @@ def receive_bm():
             return (
                 jsonify(
                     construct_response(
-                        "confirmation", {"info": "Notification forward"}, "bm"
+                        "confirmation", {"info": "Notification forwarded"}, "bm"
                     )
                 ),
                 200,
@@ -35,7 +39,7 @@ def receive_bm():
 
         if body["type"] == "status":
             return (
-                jsonify(construct_response("confirmation", {"info": "OK"}, "bm")),
+                jsonify(construct_response("ack", {"info": "OK"}, "bm")),
                 200,
             )
 
@@ -47,3 +51,12 @@ def receive_bm():
         )
 
     return "Error", 400
+
+@app.route("/smp_send", methods=["POST"])
+def send_bm():
+    body = {
+        "type": 'confirmation',
+        "msg": '',
+        "route": {"from": "smp", "to": "bm"},
+    }
+    requests.post('http://localhost:5003/smp_send', json=body)
