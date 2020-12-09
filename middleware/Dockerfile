@@ -9,8 +9,8 @@ RUN apk add --virtual .build-dependencies \
 RUN apk add --no-cache pcre
 WORKDIR /middleware
 COPY . /middleware
-RUN pip install -r /middleware/requirements.txt
+RUN pip install -r requirements.txt
 RUN pip install uwsgi
 RUN apk del .build-dependencies && rm -rf /var/cache/apk/*
-EXPOSE 5000
+EXPOSE 5003
 CMD ["uwsgi", "--ini", "/middleware/wsgi.ini"]

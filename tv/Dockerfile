@@ -10,7 +10,7 @@ RUN apk add --virtual .build-dependencies \
 RUN apk add --no-cache pcre
 WORKDIR /tv
 COPY . /tv
-RUN pip install -r /tv/requirements.txt
+RUN pip install -r requirements.txt
 RUN pip install uwsgi
 RUN apk del .build-dependencies && rm -rf /var/cache/apk/*
 EXPOSE 5002

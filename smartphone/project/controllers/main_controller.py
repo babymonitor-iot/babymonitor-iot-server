@@ -7,6 +7,7 @@ from pprint import pprint
 import json
 import requests
 import threading
+import paho.mqtt.client as mqtt
 
 confirmation = False
 
@@ -65,7 +66,10 @@ def receive_bm():
                 "msg": {"info": "The notification is confirmed"},
                 "route": {"from": "smp", "to": "bm"},
             }
-            requests.post("http://localhost:5003/smp_receive", json=body)
+            client = mqtt.Client('bm')
+            client.connect(host='http://dojot.atlantico.com.br', port=8000)
+            client.publish('/admin/9e4ed4/attrs', payload={'teste': 'olaaar'}, qos=0, retain=False)
+            # requests.post("http://localhost:5003/smp_receive", json=body)
             pprint(body['msg']["info"])
 
         return (

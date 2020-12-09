@@ -8,6 +8,7 @@ from project import db
 import json
 import requests
 from pprint import pprint
+import paho.mqtt.client as mqtt
 
 internal_state = "normal"
 
@@ -67,9 +68,12 @@ def bm_send():
     if body['type'] == 'notification':
         internal_state = 'critical'
 
-
+    client = mqtt.Client('bm')  
+    import ipdb; ipdb.set_trace()
+    client.connect(host='dojot.atlantico.com.br', port=8000)
+    client.publish('/gesad/9e4ed4/attrs', payload=str(body))
     # Send request to smp
-    requests.post("http://localhost:5003/bm_receive", json=body)
+    # requests.post("http://localhost:5003/bm_receive", json=body)
 
     return jsonify(body), 200
 

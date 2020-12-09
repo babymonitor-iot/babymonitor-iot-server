@@ -1,0 +1,40 @@
+# build: <path-of-Dockerfile>
+# image: <name-image-dockerhub>
+
+version: "3"
+services:
+  babymonitor:
+    container_name: babymonitor
+    image: babymonitor-image
+    ports:
+      - "5000:5000"
+    build: 
+      context: ./babymonitor
+      dockerfile: Dockerfile
+
+  smartphone:
+    container_name: smartphone
+    image: smartphone-image  
+    ports:
+      - "5001:5001"
+    build: 
+      context: ./smartphone
+      dockerfile: Dockerfile
+
+  tv:
+    container_name: tv
+    image: tv-image
+    ports:
+      - "5002:5002"
+    build: 
+      context: ./tv
+      dockerfile: Dockerfile
+
+  middleware:
+    container_name: middleware
+    image: middleware-image
+    ports:
+      - "5003:5003"
+    build: 
+      context: ./middleware
+      dockerfile: Dockerfile
